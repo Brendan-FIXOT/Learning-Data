@@ -4,7 +4,7 @@ class Common_methods:
     def __init__(self):
         self.model_ = None
         
-    def plot(self, X, y, model1=None, model2=None, inliers1=None, inliers2=None, ax=None, title=None, show=True):
+    def plot(self, X, y, model1=None, model2=None, model3=None, inliers1=None, inliers2=None, ax=None, title=None, show=True):
         import numpy as np
         X = np.asarray(X).ravel()
         y = np.asarray(y).ravel()
@@ -36,10 +36,10 @@ class Common_methods:
 
         # Premier modèle
         if model1 is not None:
-            m = np.asarray(model1).ravel()
-            if m.size >= 2:
-                yy = m[0] * xx + m[-1]
-                ax.plot(xx, yy, color="k", lw=2, label="model1")
+            m1 = np.asarray(model1).ravel()
+            if m1.size >= 2:
+                yy = m1[0] * xx + m1[-1]
+                ax.plot(xx, yy, color="k", lw=2, linestyle="--", label="model1")
 
         # Deuxième modèle
         if model2 is not None:
@@ -47,6 +47,13 @@ class Common_methods:
             if m2.size >= 2:
                 yy2 = m2[0] * xx + m2[-1]
                 ax.plot(xx, yy2, color="C1", lw=2, linestyle="--", label="model2")
+                
+        # Troisième modèle (OLS)
+        if model3 is not None:
+            m3 = np.asarray(model3).ravel()
+            if m3.size >= 2:
+                yy3 = m3[0] * xx + m3[-1]
+                ax.plot(xx, yy3, color="k", lw=2, linestyle=":", label="OLS")
 
         if title:
             ax.set_title(title)
