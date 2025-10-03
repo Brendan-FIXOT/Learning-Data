@@ -5,11 +5,13 @@ from .common_function import Common_methods
 from .optimal_linear_regression import OptimalLinearRegression
 
 class MyRANSAC(Common_methods, OptimalLinearRegression):
-    def __init__(self, n_iters=100, threshold=None, min_sample=2):
+    def __init__(self, n_iters=100, threshold=None, min_sample=2, random_state=None):
         self.model_ = None
         self.inliers_ = None
         self.n_iters = n_iters
         self.min_sample = min_sample
+        self.random_state = random_state
+        self.rng = np.random.default_rng(random_state)
         self.optimal_lr = OptimalLinearRegression()
         
         # Si threshold = None → calcul adaptatif basé sur MAD
@@ -27,8 +29,7 @@ class MyRANSAC(Common_methods, OptimalLinearRegression):
         
         for i in range(self.n_iters):
             # Initialize 2 random points
-            sample = random.sample(range(len(X)), self.min_sample) # or np.random.default_rng() if you want a seed to reproduce results
-
+            sample = self.rng.choice(len(X), size=self.min_sample, replace=False)
             self.optimal_lr.fit_linear_regression(X[sample], y[sample])
 
             y_pred = self.optimal_lr.predict_linear_regression(X)
