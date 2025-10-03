@@ -38,7 +38,7 @@ class MyRANSAC(Common_methods):
             inliers = np.where(error < threshold)[0] # Because np.where() give a tuple
             
             if (len(inliers) > len(best_inliers)):
-                best_model = model # New best model trained
                 best_inliers = inliers # New best inliers
+                best_model = self.fit_linear_regression(X[best_inliers], y[best_inliers]) # New best model
             
         return best_model, best_inliers
