@@ -4,27 +4,22 @@ from regression_model.myransac import MyRANSAC
 from regression_model.common_function import Common_methods
 from regression_model.optimal_linear_regression import OptimalLinearRegression
 from sklearn.linear_model import RANSACRegressor, LinearRegression
-from data.data_provider import LinearOutlierData
+from data.data_provider import LinearDataGenerator
 
 def main():
     common_function = Common_methods()
     optimal_lr = OptimalLinearRegression()
     
     # Retrieve synthetic dataset
-    dataset = LinearOutlierData(
-        n_samples=120,
-        outlier_ratio=0.25,
-        slope=2.0,
-        intercept=1.0,
-        noise=0.5,
-        random_state=42,
-    )
+    dataset = LinearDataGenerator(n_samples=1000, slope=2.0, intercept=1.0, noise=1.0, random_state=42)
+
+    X, y = dataset.generate()
     
     X, y = dataset.as_2d()  # (n,1), compatible sklearn & ton RANSAC
     
     # Run our MyRANSAC implementation
     print("Running MyRANSAC implementation...")
-    my_ransac = MyRANSAC(n_iters=100, threshold=2.0, min_sample=2)
+    my_ransac = MyRANSAC(n_iters=100, threshold=2.0, min_sample=2, random_state=42)
     my_ransac.fit(X, y)
     model1 = my_ransac.model_
     inliers1 = my_ransac.inliers_
