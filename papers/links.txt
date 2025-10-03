@@ -1,0 +1,2 @@
+We used the sklearn ransac document to optimize our ransac methods (in-house).
+https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html

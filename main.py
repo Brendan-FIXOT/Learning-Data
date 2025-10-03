@@ -22,17 +22,12 @@ def main():
     
     # Run our MyRANSAC implementation
     print("Running MyRANSAC implementation...")
-    my_ransac = MyRANSAC()
-    model1, inliers1 = my_ransac.myransac(X, y)
+    my_ransac = MyRANSAC(n_iters=100, threshold=2.0, min_sample=2)
+    model1, inliers1 = my_ransac.fit(X, y)
     
     # Run sklearn RANSAC
     print("Running sklearn RANSAC...")
-    ransac = RANSACRegressor(
-        estimator=LinearRegression(),   # base model
-        max_trials=100,                 # number of iterations
-        min_samples=2,                  # size of the subsample
-        residual_threshold=2.0,         # threshold of error to classify as inlier
-        random_state=42).fit(X, y)
+    ransac = RANSACRegressor(estimator=LinearRegression(), max_trials=100, min_samples=2, residual_threshold=2.0, random_state=42).fit(X, y)
     inliers2 = ransac.inlier_mask_
     model2 = (ransac.estimator_.coef_[0], ransac.estimator_.intercept_)  # slope, intercept
     
